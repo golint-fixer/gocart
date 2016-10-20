@@ -40,7 +40,7 @@ func CheckPlacementAcrossDatacenters(hostPool *hostpool.HostPool, datacenters []
 			panic(err)
 		}
 		if len(host.VmPool.Vms) > 0 {
-			log.Printf("%v runs %d '%v' VMs in %v\n", host.Name, len(host.VmPool.Vms), vmNamePattern, host.Template.Datacenter)
+			log.Printf("%v runs %d '%v' in %v: %v", host.Name, len(host.VmPool.Vms), vmNamePattern, host.Template.Datacenter, host.VmPool)
 
 			perDatacenterCount[host.Template.Datacenter] += len(host.VmPool.Vms)
 			totalCount += len(host.VmPool.Vms)
@@ -71,7 +71,7 @@ func main() {
 		w             sync.WaitGroup
 	)
 
-	flag.Var(&datacenters, "datacenter", "Datacenters")
+	flag.Var(&datacenters, "datacenter", "Datacenters (may be specified multiple times)")
 	flag.BoolVar(&verbose, "v", false, "Verbose mode")
 	flag.StringVar(&cpuprofile, "cpuprofile", "", "Write CPU profile to file")
 	flag.StringVar(&user, "user", "", "OpenNebula API user (mandatory)")
