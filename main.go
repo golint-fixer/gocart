@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"runtime/pprof"
+	"sync"
 
 	"github.com/marthjod/gocart/api"
 	"github.com/marthjod/gocart/hostpool"
@@ -67,6 +68,7 @@ func main() {
 		url           string
 		skipVerifySSL bool
 		vmNamePattern string
+		w             sync.WaitGroup
 	)
 
 	flag.Var(&datacenters, "datacenter", "Datacenters")
@@ -98,14 +100,24 @@ func main() {
 	}
 
 	vmPool := vmpool.NewVmPool()
-	if err := apiClient.Call(vmPool); err != nil {
-		panic(err)
-	}
-
 	hostPool := hostpool.NewHostPool()
-	if err := apiClient.Call(hostPool); err != nil {
-		panic(err)
-	}
+	w.Add(2)
+
+	go func(*vmpool.VmPool) {
+		if err := apiClient.Call(vmPool); err != nil {
+			panic(err)
+		}
+		w.Done()
+	}(vmPool)
+
+	go func(*hostpool.HostPool) {
+		if err := apiClient.Call(hostPool); err != nil {
+			panic(err)
+		}
+		w.Done()
+	}(hostPool)
+
+	w.Wait()
 
 	hostPool.MapVms(vmPool)
 
