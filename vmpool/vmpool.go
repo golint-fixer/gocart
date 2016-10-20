@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"io"
 	"regexp"
+	"strings"
 
 	"github.com/marthjod/gocart/ocatypes"
 )
@@ -32,6 +33,18 @@ func (vmpool *VmPool) Unmarshal(data []byte) error {
 func NewVmPool() *VmPool {
 	p := new(VmPool)
 	return p
+}
+
+func (vmPool *VmPool) String() string {
+	var (
+		vmNames []string
+	)
+
+	for _, vm := range vmPool.Vms {
+		vmNames = append(vmNames, vm.Name)
+	}
+
+	return strings.Join(vmNames, ", ")
 }
 
 func FromReader(r io.Reader) (*VmPool, error) {

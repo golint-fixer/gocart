@@ -3,6 +3,7 @@ package hostpool
 import (
 	"encoding/xml"
 	"io"
+	"strings"
 
 	"github.com/marthjod/gocart/ocatypes"
 	"github.com/marthjod/gocart/vmpool"
@@ -37,6 +38,18 @@ type Host struct {
 func NewHostPool() *HostPool {
 	p := new(HostPool)
 	return p
+}
+
+func (hostPool *HostPool) String() string {
+	var (
+		hostNames []string
+	)
+
+	for _, host := range hostPool.Hosts {
+		hostNames = append(hostNames, host.Name)
+	}
+
+	return strings.Join(hostNames, ", ")
 }
 
 func FromReader(r io.Reader) (*HostPool, error) {
