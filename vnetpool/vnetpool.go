@@ -4,13 +4,13 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	"github.com/marthjod/gocart/ocatypes"
+	"github.com/marthjod/gocart/vnet"
 )
 
 // VNetPool is a list of Virtual Networks
 type VNetPool struct {
-	XMLName  xml.Name         `xml:"VNET_POOL"`
-	Networks []*ocatypes.VNet `xml:"VNET"`
+	XMLName  xml.Name     `xml:"VNET_POOL"`
+	Networks []*vnet.VNet `xml:"VNET"`
 }
 
 // ExistsName does this vnet exists?
@@ -34,7 +34,7 @@ func (vt *VNetPool) GetIDByName(n string) (c int, err error) {
 }
 
 // GetVNetByName returns the VNet
-func (vt *VNetPool) GetVNetByName(n string) (vnet *ocatypes.VNet, err error) {
+func (vt *VNetPool) GetVNetByName(n string) (vnet *vnet.VNet, err error) {
 	for _, net := range vt.Networks {
 		if net.Name == n {
 			return net, nil
@@ -44,7 +44,7 @@ func (vt *VNetPool) GetVNetByName(n string) (vnet *ocatypes.VNet, err error) {
 }
 
 // GetVNetByID returns the VNet
-func (vt *VNetPool) GetVNetByID(i int) (vnet *ocatypes.VNet, err error) {
+func (vt *VNetPool) GetVNetByID(i int) (vnet *vnet.VNet, err error) {
 	for _, net := range vt.Networks {
 		if net.ID == i {
 			return net, nil

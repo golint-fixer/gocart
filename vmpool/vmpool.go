@@ -6,13 +6,13 @@ import (
 	"io"
 	"regexp"
 
-	"github.com/marthjod/gocart/ocatypes"
+	"github.com/marthjod/gocart/vm"
 )
 
 // VMPool represents a VM pool.
 type VMPool struct {
-	XMLName xml.Name       `xml:"VM_POOL"`
-	VMs     []*ocatypes.VM `xml:"VM"`
+	XMLName xml.Name `xml:"VM_POOL"`
+	VMs     []*vm.VM `xml:"VM"`
 }
 
 // String returns a string representation of a VM pool.
@@ -88,7 +88,7 @@ func (p *VMPool) GetVMsByName(matchPattern string) (*VMPool, error) {
 
 // GetDistinctVMNamePatterns returns a set of distinct VM name patterns.
 func (p *VMPool) GetDistinctVMNamePatterns(filter, prefix, infix, suffix string) map[string]bool {
-	vmNameExtractor := func(vm *ocatypes.VM) string {
+	vmNameExtractor := func(vm *vm.VM) string {
 		return vm.Name
 	}
 
@@ -97,7 +97,7 @@ func (p *VMPool) GetDistinctVMNamePatterns(filter, prefix, infix, suffix string)
 
 // GetDistinctVMNamePatternsExtractHostname returns a set of distinct VM name patterns where hostname != VM name.
 func (p *VMPool) GetDistinctVMNamePatternsExtractHostname(filter, prefix, infix, suffix string,
-	hostNameExtractor func(vm *ocatypes.VM) string) map[string]bool {
+	hostNameExtractor func(vm *vm.VM) string) map[string]bool {
 
 	var (
 		distinctPatterns = make(map[string]bool)
@@ -125,7 +125,7 @@ func (p *VMPool) GetDistinctVMNamePatternsExtractHostname(filter, prefix, infix,
 }
 
 // GetVMsByLCMStates returns a VM pool based on matching LCM states.
-func (p *VMPool) GetVMsByLCMStates(states ...ocatypes.LCMState) (*VMPool, error) {
+func (p *VMPool) GetVMsByLCMStates(states ...vm.LCMState) (*VMPool, error) {
 	var pool VMPool
 	for _, vm := range p.VMs {
 		for _, state := range states {

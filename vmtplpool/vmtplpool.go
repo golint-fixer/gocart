@@ -3,13 +3,13 @@ package vmtplpool
 import (
 	"encoding/xml"
 
-	"github.com/marthjod/gocart/ocatypes"
+	"github.com/marthjod/gocart/template"
 )
 
 // VMTemplatePool is a list of VMTemplates
 type VMTemplatePool struct {
 	XMLName   xml.Name               `xml:"VMTEMPLATE_POOL"`
-	Templates []*ocatypes.VMTemplate `xml:"VMTEMPLATE"`
+	Templates []*template.VMTemplate `xml:"VMTEMPLATE"`
 }
 
 // APIMethod implements the api.Endpointer interface

@@ -4,13 +4,13 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	"github.com/marthjod/gocart/ocatypes"
+	"github.com/marthjod/gocart/datastore"
 )
 
 // DSPool is a list of Datastores.
 type DSPool struct {
-	XMLName    xml.Name              `xml:"DATASTORE_POOL"`
-	Datastores []*ocatypes.Datastore `xml:"DATASTORE"`
+	XMLName    xml.Name               `xml:"DATASTORE_POOL"`
+	Datastores []*datastore.Datastore `xml:"DATASTORE"`
 }
 
 // ExistsName determines if a datastore with a given name exists.

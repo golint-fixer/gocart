@@ -4,13 +4,13 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	"github.com/marthjod/gocart/ocatypes"
+	"github.com/marthjod/gocart/cluster"
 )
 
 // ClusterPool is a list of Clusters.
 type ClusterPool struct {
-	XMLName  xml.Name            `xml:"CLUSTER_POOL"`
-	Clusters []*ocatypes.Cluster `xml:"CLUSTER"`
+	XMLName  xml.Name           `xml:"CLUSTER_POOL"`
+	Clusters []*cluster.Cluster `xml:"CLUSTER"`
 }
 
 // APIMethod implements the api.Endpointer interface.

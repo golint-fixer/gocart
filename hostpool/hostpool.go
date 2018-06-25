@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 	"io"
 
-	"github.com/marthjod/gocart/ocatypes"
+	"github.com/marthjod/gocart/host"
 	"github.com/marthjod/gocart/vmpool"
 )
 
@@ -51,7 +51,7 @@ func (p *HostPool) MapVMs(vmpool *vmpool.VMPool) {
 
 // Host represents an OpenNebula node/host.
 type Host struct {
-	*ocatypes.Host
+	*host.Host
 	VMPool *vmpool.VMPool
 }
 

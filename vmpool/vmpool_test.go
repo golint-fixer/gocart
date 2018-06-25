@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/marthjod/gocart/ocatypes"
+	"github.com/marthjod/gocart/vm"
 	"github.com/marthjod/gocart/vmpool"
 )
 
@@ -172,7 +172,7 @@ func TestGetDistinctVmNamePatternsExtractHostname(t *testing.T) {
 	}
 
 	pool := getVMPoolFromFile("testdata/vmpool.xml")
-	fqdnExtractor := func(vm *ocatypes.VM) string {
+	fqdnExtractor := func(vm *vm.VM) string {
 		h, _ := vm.UserTemplate.Items.GetCustom("CUSTOM_FQDN")
 		return h
 	}

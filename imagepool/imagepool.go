@@ -3,13 +3,13 @@ package imagepool
 import (
 	"encoding/xml"
 
-	"github.com/marthjod/gocart/ocatypes"
+	"github.com/marthjod/gocart/image"
 )
 
 // ImagePool is a list of Images.
 type ImagePool struct {
-	XMLName xml.Name          `xml:"IMAGE_POOL"`
-	Images  []*ocatypes.Image `xml:"IMAGE"`
+	XMLName xml.Name       `xml:"IMAGE_POOL"`
+	Images  []*image.Image `xml:"IMAGE"`
 }
 
 // APIMethod implements the api.Endpointer interface
