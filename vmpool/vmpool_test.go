@@ -1,7 +1,7 @@
 package vmpool_test
 
 import (
-	"fmt"
+	"encoding/xml"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -19,56 +19,10 @@ func getFileContents(path string) []byte {
 }
 
 func getVMPoolFromFile(path string) *vmpool.VMPool {
-	pool := vmpool.NewVMPool()
-	xml := getFileContents(path)
-	_ = pool.Unmarshal(xml)
+	pool := &vmpool.VMPool{}
+	c := getFileContents(path)
+	_ = xml.Unmarshal(c, &pool)
 	return pool
-}
-
-func TestAPIMethod(t *testing.T) {
-	const apiMethod = "one.vmpool.info"
-
-	if vmpool.NewVMPool().APIMethod() != apiMethod {
-		t.Fatalf("API method differs from %s", apiMethod)
-	}
-}
-
-func TestAPIArgs(t *testing.T) {
-	const (
-		authstring = "user:pass"
-		expected   = "[user:pass %!s(int=-2) %!s(int=-1) %!s(int=-1) %!s(int=-1)]"
-	)
-
-	args := vmpool.NewVMPool().APIArgs(authstring)
-	argsStr := fmt.Sprintf("%s", args)
-	if argsStr != expected {
-		t.Fatalf("Mismatch: %s != %s", argsStr, expected)
-	}
-}
-
-func TestUnmarshalValidVmpool(t *testing.T) {
-	pool := vmpool.NewVMPool()
-	xml := getFileContents("testdata/vmpool.xml")
-
-	err := pool.Unmarshal(xml)
-	if err != nil {
-		t.Fatal(err.Error())
-	}
-}
-
-func TestUnmarshalInvalidXML(t *testing.T) {
-	var expected = "expected element type <VM_POOL> but have <INVALID_VM_POOL>"
-	pool := vmpool.NewVMPool()
-	xml := getFileContents("testdata/invalid-vmpool.xml")
-
-	err := pool.Unmarshal(xml)
-	if err == nil {
-		t.Fatal("Call did not throw an error")
-	} else {
-		if err.Error() != expected {
-			t.Fatalf("Errors do not match: %s != %s", err.Error(), expected)
-		}
-	}
 }
 
 func TestFromReader(t *testing.T) {

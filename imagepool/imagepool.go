@@ -3,6 +3,7 @@ package imagepool
 import (
 	"encoding/xml"
 
+	"github.com/marthjod/gocart/api"
 	"github.com/marthjod/gocart/image"
 )
 
@@ -12,32 +13,14 @@ type ImagePool struct {
 	Images  []*image.Image `xml:"IMAGE"`
 }
 
-// APIMethod implements the api.Endpointer interface
-func (vt *ImagePool) APIMethod() string {
-	return "one.imagepool.info"
+// Info http://docs.opennebula.org/4.12/integration/system_interfaces/api.html#one-imagepool-info
+func (p *ImagePool) Info(c *api.RPC) error {
+	return c.Call(p, "one.imagepool.info", []interface{}{c.AuthString, -2, -1, -1})
 }
 
-// Unmarshal implements the api.Endpointer interface
-func (vt *ImagePool) Unmarshal(data []byte) error {
-	err := xml.Unmarshal(data, vt)
-	return err
-}
-
-// APIArgs implements the api.Endpointer interface
-// API parameter documentation: http://docs.opennebula.org/4.10/integration/system_interfaces/api.html#one-template-info
-func (vt *ImagePool) APIArgs(authstring string) []interface{} {
-	return []interface{}{authstring, -2, -1, -1}
-}
-
-// NewImagePool creates a new ImagePool
-func NewImagePool() *ImagePool {
-	p := new(ImagePool)
-	return p
-}
-
-// ExistsName does this image exists?
-func (vt *ImagePool) ExistsName(n string) bool {
-	for _, image := range vt.Images {
+// ExistsName does this image exist?
+func (p *ImagePool) ExistsName(n string) bool {
+	for _, image := range p.Images {
 		if image.Name == n {
 			return true
 		}
@@ -45,9 +28,9 @@ func (vt *ImagePool) ExistsName(n string) bool {
 	return false
 }
 
-// ExistsID does this image exists?
-func (vt *ImagePool) ExistsID(i int) bool {
-	for _, image := range vt.Images {
+// ExistsID does this image exist?
+func (p *ImagePool) ExistsID(i int) bool {
+	for _, image := range p.Images {
 		if image.ID == i {
 			return true
 		}

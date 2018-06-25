@@ -1,19 +1,13 @@
 package api
 
 import (
+	"encoding/xml"
 	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/bogue1979/xmlrpc"
 )
-
-// XMLRPCEndpointer defines behavior of a specific XML-RPC API endpoint.
-type XMLRPCEndpointer interface {
-	APIMethod() string
-	APIArgs(string) []interface{}
-	Unmarshal([]byte) error
-}
 
 // RPC represents an XML-RPC client.
 type RPC struct {
@@ -40,9 +34,7 @@ func newClient(url, user, password string, client *xmlrpc.Client) (*RPC, error) 
 }
 
 // Call issues a request against the API endpoint.
-func (c *RPC) Call(endpoint XMLRPCEndpointer) error {
-	args := endpoint.APIArgs(c.AuthString)
-	method := endpoint.APIMethod()
+func (c *RPC) Call(v interface{}, method string, args []interface{}) error {
 	result := []interface{}{}
 
 	if err := c.Client.Call(method, args, &result); err != nil {
@@ -64,8 +56,7 @@ func (c *RPC) Call(endpoint XMLRPCEndpointer) error {
 		}
 	}
 	if w, ok := result[1].(string); ok {
-		endpoint.Unmarshal([]byte(w))
-		return nil
+		return xml.Unmarshal([]byte(w), v)
 	}
 	return fmt.Errorf("no known result type received from RPC call")
 }

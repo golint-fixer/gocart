@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
+	"github.com/marthjod/gocart/api"
 	"github.com/marthjod/gocart/vnet"
 )
 
@@ -63,19 +64,7 @@ func (vt *VNetPool) ExistsID(n int) bool {
 	return false
 }
 
-// APIMethod implements the api.Endpointer interface
-func (vt *VNetPool) APIMethod() string {
-	return "one.vnpool.info"
-}
-
-// Unmarshal implements the api.Endpointer interface
-func (vt *VNetPool) Unmarshal(data []byte) error {
-	err := xml.Unmarshal(data, vt)
-	return err
-}
-
-// APIArgs implements the api.Endpointer interface
-// API parameter documentation: http://docs.opennebula.org/4.10/integration/system_interfaces/api.html#one-template-info
-func (vt *VNetPool) APIArgs(authstring string) []interface{} {
-	return []interface{}{authstring, -2, -1, -1}
+// Info http://docs.opennebula.org/4.12/integration/system_interfaces/api.html#one-vnpool-info
+func (vt *VNetPool) Info(c *api.RPC) error {
+	return c.Call(vt, "one.vnpool.info", []interface{}{c.AuthString, -2, -1, -1})
 }

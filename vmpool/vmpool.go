@@ -6,6 +6,7 @@ import (
 	"io"
 	"regexp"
 
+	"github.com/marthjod/gocart/api"
 	"github.com/marthjod/gocart/vm"
 )
 
@@ -15,37 +16,9 @@ type VMPool struct {
 	VMs     []*vm.VM `xml:"VM"`
 }
 
-// String returns a string representation of a VM pool.
-func (p *VMPool) String() string {
-	var list = []string{}
-
-	for _, vm := range p.VMs {
-		list = append(list, vm.Name)
-	}
-
-	return fmt.Sprintf("%s", list)
-}
-
-// APIMethod implements the api.Endpointer interface
-func (p *VMPool) APIMethod() string {
-	return "one.vmpool.info"
-}
-
-// APIArgs implements the api.Endpointer interface
-// API parameter documentation: http://docs.opennebula.org/4.10/integration/system_interfaces/api.html#one-vmpool-info
-func (p *VMPool) APIArgs(authstring string) []interface{} {
-	return []interface{}{authstring, -2, -1, -1, -1}
-}
-
-// Unmarshal unmarshals into a VM pool.
-func (p *VMPool) Unmarshal(data []byte) error {
-	err := xml.Unmarshal(data, p)
-	return err
-}
-
-// NewVMPool returns a new VM pool.
-func NewVMPool() *VMPool {
-	return &VMPool{}
+// Info http://docs.opennebula.org/4.12/integration/system_interfaces/api.html#one-vmpool-info
+func (p *VMPool) Info(c *api.RPC) error {
+	return c.Call(p, "one.vmpool.info", []interface{}{c.AuthString, -2, -1, -1, -1})
 }
 
 // FromReader reads into a VM pool.

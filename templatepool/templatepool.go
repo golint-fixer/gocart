@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"regexp"
 
+	"github.com/marthjod/gocart/api"
 	"github.com/marthjod/gocart/template"
 )
 
@@ -13,21 +14,9 @@ type TemplatePool struct {
 	Templates []*template.Template `xml:"VMTEMPLATE"`
 }
 
-// APIMethod implements the api.Endpointer interface
-func (t *TemplatePool) APIMethod() string {
-	return "one.templatepool.info"
-}
-
-// Unmarshal implements the api.Endpointer interface
-func (t *TemplatePool) Unmarshal(data []byte) error {
-	err := xml.Unmarshal(data, t)
-	return err
-}
-
-// APIArgs implements the api.Endpointer interface
-// API parameter documentation: http://docs.opennebula.org/4.10/integration/system_interfaces/api.html#one-template-info
-func (t *TemplatePool) APIArgs(authstring string) []interface{} {
-	return []interface{}{authstring, -2, -1, -1}
+// Info http://docs.opennebula.org/4.12/integration/system_interfaces/api.html#one-templatepool-info
+func (t *TemplatePool) Info(c *api.RPC) error {
+	return c.Call(t, "one.templatepool.info", []interface{}{c.AuthString, -2, -1, -1})
 }
 
 // GetTemplatesByName returns a VM template pool based on matching template names.

@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
+	"github.com/marthjod/gocart/api"
 	"github.com/marthjod/gocart/datastore"
 )
 
@@ -14,8 +15,8 @@ type DSPool struct {
 }
 
 // ExistsName determines if a datastore with a given name exists.
-func (vt *DSPool) ExistsName(n string) bool {
-	for _, ds := range vt.Datastores {
+func (p *DSPool) ExistsName(n string) bool {
+	for _, ds := range p.Datastores {
 		if ds.Name == n {
 			return true
 		}
@@ -24,8 +25,8 @@ func (vt *DSPool) ExistsName(n string) bool {
 }
 
 // ExistsID determines if a datastore with a given ID exists.
-func (vt *DSPool) ExistsID(n int) bool {
-	for _, ds := range vt.Datastores {
+func (p *DSPool) ExistsID(n int) bool {
+	for _, ds := range p.Datastores {
 		if ds.ID == n {
 			return true
 		}
@@ -34,8 +35,8 @@ func (vt *DSPool) ExistsID(n int) bool {
 }
 
 // GetClusterIDByName returns the cluster ID.
-func (vt *DSPool) GetClusterIDByName(n string) (c int, err error) {
-	for _, ds := range vt.Datastores {
+func (p *DSPool) GetClusterIDByName(n string) (c int, err error) {
+	for _, ds := range p.Datastores {
 		if ds.Name == n {
 			return ds.ClusterID, nil
 		}
@@ -43,23 +44,7 @@ func (vt *DSPool) GetClusterIDByName(n string) (c int, err error) {
 	return -1, fmt.Errorf("could not find datastore with name %s", n)
 }
 
-// APIMethod implements the api.Endpointer interface
-func (vt *DSPool) APIMethod() string {
-	return "one.datastorepool.info"
-}
-
-// Unmarshal implements the api.Endpointer interface
-func (vt *DSPool) Unmarshal(data []byte) error {
-	return xml.Unmarshal(data, vt)
-}
-
-// APIArgs implements the api.Endpointer interface.
-// API parameter documentation: http://docs.opennebula.org/4.10/integration/system_interfaces/api.html#one-template-info
-func (vt *DSPool) APIArgs(authstring string) []interface{} {
-	return []interface{}{authstring, -2, -1, -1}
-}
-
-// NewDSPool creates a new DSPool.
-func NewDSPool() *DSPool {
-	return &DSPool{}
+// Info http://docs.opennebula.org/4.12/integration/system_interfaces/api.html#one-datastorepool-info
+func (p *DSPool) Info(c *api.RPC) error {
+	return c.Call(p, "one.datastorepool.info", []interface{}{c.AuthString, -2, -1, -1})
 }

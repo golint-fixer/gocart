@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"io"
 
+	"github.com/marthjod/gocart/api"
 	"github.com/marthjod/gocart/host"
 	"github.com/marthjod/gocart/vmpool"
 )
@@ -26,20 +27,9 @@ type HostPool struct {
 	Hosts   []*Host  `xml:"HOST"`
 }
 
-// APIMethod implements the api.Endpointer interface
-func (p *HostPool) APIMethod() string {
-	return "one.hostpool.info"
-}
-
-// APIArgs implements the api.Endpointer interface
-// API parameter documentation: http://docs.opennebula.org/4.10/integration/system_interfaces/api.html#one-hostpool-info
-func (p *HostPool) APIArgs(authstring string) []interface{} {
-	return []interface{}{authstring}
-}
-
-// Unmarshal unmarshals into a host pool.
-func (p *HostPool) Unmarshal(data []byte) error {
-	return xml.Unmarshal(data, p)
+// Info http://docs.opennebula.org/4.12/integration/system_interfaces/api.html#one-hostpool-info
+func (p *HostPool) Info(c *api.RPC) error {
+	return c.Call(p, "one.hostpool.info", []interface{}{c.AuthString})
 }
 
 // MapVMs ...
@@ -58,11 +48,6 @@ type Host struct {
 // String returns a host's short strings representation.
 func (h *Host) String() string {
 	return h.Name
-}
-
-// NewHostPool returns a new host pool.
-func NewHostPool() *HostPool {
-	return &HostPool{}
 }
 
 // FromReader reads into a host pool.

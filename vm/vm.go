@@ -211,3 +211,7 @@ func FromReader(r io.Reader) (*VM, error) {
 	}
 	return &v, nil
 }
+
+func (v VM) String() string {
+	return v.Name
+}
