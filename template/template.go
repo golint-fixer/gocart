@@ -4,13 +4,14 @@ import (
 	"encoding/xml"
 	"fmt"
 
+	"github.com/marthjod/gocart/api"
 	"github.com/marthjod/gocart/image"
 	"github.com/marthjod/gocart/vnet"
 )
 
 // Template represents a VM template.
 type Template struct {
-	ID       int          `xml:"TEMPLATE_ID"`
+	ID       int          `xml:"ID"`
 	Name     string       `xml:"NAME"`
 	Uname    string       `xml:"UNAME"`
 	RegTime  int          `xml:"REGTIME"`
@@ -58,4 +59,13 @@ func (tags Tags) GetCustom(tagName string) (string, error) {
 		}
 	}
 	return "", fmt.Errorf("tag %s not found", tagName)
+}
+
+// Instantiate http://docs.opennebula.org/4.12/integration/system_interfaces/api.html#one-template-instantiate
+func (t *Template) Instantiate(c *api.RPC, name string) error {
+	return c.Call(t, "one.template.instantiate", []interface{}{c.AuthString, t.ID, name, false, ""})
+}
+
+func (t Template) String() string {
+	return t.Name
 }

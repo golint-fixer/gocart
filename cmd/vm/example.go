@@ -28,4 +28,9 @@ func main() {
 	}
 
 	fmt.Println(vmPool)
+	bla, err := vmPool.GetVMsByName("bla")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(bla)
 }

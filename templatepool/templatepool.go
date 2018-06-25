@@ -2,6 +2,7 @@ package templatepool
 
 import (
 	"encoding/xml"
+	"errors"
 	"regexp"
 
 	"github.com/marthjod/gocart/api"
@@ -32,4 +33,18 @@ func (t *TemplatePool) GetTemplatesByName(matchPattern string) (*TemplatePool, e
 		}
 	}
 	return &p, nil
+}
+
+// GetTemplateByName returns the first matching template from the pool. Useful if you only expect a single match anyway.
+func (t *TemplatePool) GetTemplateByName(matchPattern string) (*template.Template, error) {
+	var empty = &template.Template{}
+
+	matches, err := t.GetTemplatesByName(matchPattern)
+	if err != nil {
+		return empty, err
+	}
+	if len(matches.Templates) > 0 {
+		return matches.Templates[0], nil
+	}
+	return empty, errors.New("no matching template found")
 }

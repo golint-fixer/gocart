@@ -55,8 +55,14 @@ func (c *RPC) Call(v interface{}, method string, args []interface{}) error {
 			return fmt.Errorf("API call against %s unsuccessful", c.URL)
 		}
 	}
-	if w, ok := result[1].(string); ok {
-		return xml.Unmarshal([]byte(w), v)
+
+	switch r := result[1].(type) {
+	case int64:
+		return nil
+	case string:
+		return xml.Unmarshal([]byte(r), v)
+	default:
+		return fmt.Errorf("no known result type received from RPC call")
 	}
-	return fmt.Errorf("no known result type received from RPC call")
+
 }

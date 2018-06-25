@@ -25,16 +25,22 @@ func main() {
 	var tplPool = &templatepool.TemplatePool{}
 	err = tplPool.Info(c)
 	if err != nil {
-		log.Fatal("template pool: ", err)
+		log.Fatalln(err)
 	}
 
 	fmt.Println(tplPool)
 
-	bla, err := tplPool.GetTemplatesByName("BLA")
+	bla, err := tplPool.GetTemplateByName("BLA")
 	if err != nil {
 		log.Fatalln(err)
 	}
 
 	fmt.Println(bla)
+	vmName := "blackbox-foo-123-west"
+	err = bla.Instantiate(c, vmName)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Printf("instantiated %s from template %s (%d)\n", vmName, bla, bla.ID)
 
 }
