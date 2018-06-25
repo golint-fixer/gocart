@@ -79,9 +79,3 @@ func (vt *VNetPool) Unmarshal(data []byte) error {
 func (vt *VNetPool) APIArgs(authstring string) []interface{} {
 	return []interface{}{authstring, -2, -1, -1}
 }
-
-// NewVNetPool creates a new VMTemplatePool
-func NewVNetPool() *VNetPool {
-	p := new(VNetPool)
-	return p
-}

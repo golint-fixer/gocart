@@ -197,7 +197,7 @@ type VM struct {
 	LCMState     LCMState              `xml:"LCM_STATE"`
 	Resched      int                   `xml:"RESCHED"`
 	DeployID     string                `xml:"DEPLOY_ID"`
-	Template     template.VMTemplate   `xml:"TEMPLATE"`
+	Template     template.Template     `xml:"TEMPLATE"`
 	UserTemplate template.UserTemplate `xml:"USER_TEMPLATE"`
 	Node         string                `xml:"HISTORY_RECORDS>HISTORY>HOSTNAME"`
 }

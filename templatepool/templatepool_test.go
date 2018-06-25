@@ -89,6 +89,5 @@ func TestGetTemplatesByName(t *testing.T) {
 		if len(found.Templates) != expected {
 			t.Errorf("%q: expected %d VM(s), found %d", pattern, expected, len(found.Templates))
 		}
-
 	}
 }

@@ -8,8 +8,8 @@ import (
 	"github.com/marthjod/gocart/vnet"
 )
 
-// VMTemplate represents a VM template.
-type VMTemplate struct {
+// Template represents a VM template.
+type Template struct {
 	ID       int          `xml:"TEMPLATE_ID"`
 	Name     string       `xml:"NAME"`
 	Uname    string       `xml:"UNAME"`

@@ -9,8 +9,8 @@ import (
 
 // TemplatePool is a list of Templates
 type TemplatePool struct {
-	XMLName   xml.Name               `xml:"VMTEMPLATE_POOL"`
-	Templates []*template.VMTemplate `xml:"VMTEMPLATE"`
+	XMLName   xml.Name             `xml:"VMTEMPLATE_POOL"`
+	Templates []*template.Template `xml:"VMTEMPLATE"`
 }
 
 // APIMethod implements the api.Endpointer interface
