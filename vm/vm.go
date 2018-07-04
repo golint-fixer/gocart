@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"io"
 
+	"github.com/marthjod/gocart/image"
 	"github.com/marthjod/gocart/template"
 )
 
@@ -197,9 +198,19 @@ type VM struct {
 	LCMState     LCMState              `xml:"LCM_STATE"`
 	Resched      int                   `xml:"RESCHED"`
 	DeployID     string                `xml:"DEPLOY_ID"`
-	Template     template.Template     `xml:"TEMPLATE"`
+	Template     Template              `xml:"TEMPLATE"`
 	UserTemplate template.UserTemplate `xml:"USER_TEMPLATE"`
 	Node         string                `xml:"HISTORY_RECORDS>HISTORY>HOSTNAME"`
+}
+
+// Template represents a VM template, i.e. the template structure within VM objects
+// (NB: this is not the same as templates in a VM pool).
+type Template struct {
+	ID     int          `xml:"TEMPLATE_ID"`
+	Memory int          `xml:"MEMORY"`
+	VMID   int          `xml:"VMID"`
+	Disk   []image.Disk `xml:"DISK"`
+	CPU    string       `xml:"CPU"`
 }
 
 // FromReader reads into a VM struct.
