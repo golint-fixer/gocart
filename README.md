@@ -10,6 +10,10 @@ OpenNebula 4 XML-RPC API (OCA) wrapper/client library.
 go get -u github.com/marthjod/gocart
 ```
 
+## Examples
+
+See _cmd/**/example.go_.
+
 ## Run tests
 
 ```
