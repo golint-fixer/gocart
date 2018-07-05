@@ -7,12 +7,27 @@ import (
 	"github.com/marthjod/gocart/vmpool"
 )
 
+// State represents host state
+type State int
+
+//go:generate stringer -type=State
+const (
+	Init                State = iota
+	MonitoringMonitored State = iota // Currently monitoring, previously MONITORED
+	Monitored           State = iota
+	Error               State = iota
+	Disabled            State = iota
+	MonitoringError     State = iota // Currently monitoring, previously ERROR
+	MonitoringInit      State = iota // Currently monitoring, previously initialized
+	MonitoringDisabled  State = iota // Currently monitoring, previously DISABLED
+)
+
 // Host represents an OpenNebula host.
 type Host struct {
 	XMLName   xml.Name              `xml:"HOST"`
 	ID        int                   `xml:"ID"`
 	Name      string                `xml:"NAME"`
-	State     int                   `xml:"STATE"`
+	State     State                 `xml:"STATE"`
 	Cluster   string                `xml:"CLUSTER"`
 	ClusterID int                   `xml:"CLUSTER_ID"`
 	Template  template.HostTemplate `xml:"TEMPLATE"`

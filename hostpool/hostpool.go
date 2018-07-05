@@ -9,18 +9,6 @@ import (
 	"github.com/marthjod/gocart/vmpool"
 )
 
-// TODO use real enum like for VM states
-const (
-	Init                int = iota
-	MonitoringMonitored int = iota // Currently monitoring, previously MONITORED
-	Monitored           int = iota
-	Error               int = iota
-	Disabled            int = iota
-	MonitoringError     int = iota // Currently monitoring, previously ERROR
-	MonitoringInit      int = iota // Currently monitoring, previously initialized
-	MonitoringDisabled  int = iota // Currently monitoring, previously DISABLED
-)
-
 // HostPool represents a host pool.
 type HostPool struct {
 	XMLName xml.Name     `xml:"HOST_POOL"`
@@ -63,7 +51,7 @@ func (p *HostPool) GetHostsInCluster(cluster string) *HostPool {
 }
 
 // FilterHostsByStates returns host pool containing only hosts in one of the provided states.
-func (p *HostPool) FilterHostsByStates(states ...int) *HostPool {
+func (p *HostPool) FilterHostsByStates(states ...host.State) *HostPool {
 	var (
 		hp HostPool
 	)
