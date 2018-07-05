@@ -23,8 +23,8 @@ const (
 
 // HostPool represents a host pool.
 type HostPool struct {
-	XMLName xml.Name `xml:"HOST_POOL"`
-	Hosts   []*Host  `xml:"HOST"`
+	XMLName xml.Name     `xml:"HOST_POOL"`
+	Hosts   []*host.Host `xml:"HOST"`
 }
 
 // Info http://docs.opennebula.org/4.12/integration/system_interfaces/api.html#one-hostpool-info
@@ -37,17 +37,6 @@ func (p *HostPool) MapVMs(vmpool *vmpool.VMPool) {
 	for _, host := range p.Hosts {
 		host.MapVMs(vmpool)
 	}
-}
-
-// Host represents an OpenNebula node/host.
-type Host struct {
-	*host.Host
-	VMPool *vmpool.VMPool
-}
-
-// String returns a host's short strings representation.
-func (h *Host) String() string {
-	return h.Name
 }
 
 // FromReader reads into a host pool.
@@ -100,9 +89,4 @@ func (p *HostPool) FilterOutEmptyHosts() *HostPool {
 		}
 	}
 	return &hp
-}
-
-// MapVMs ...
-func (h *Host) MapVMs(vmpool *vmpool.VMPool) {
-	h.VMPool = vmpool.GetVMsByID(h.VMIDs...)
 }
